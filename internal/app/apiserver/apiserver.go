@@ -1,18 +1,37 @@
 package apiserver
 
-// APIServer...
-type APIServer struct {
-	config *Config
-}
+import (
+	"database/sql"
+	"net/http"
 
-// New
-func New(config *Config) *APIServer {
-	return &APIServer{
-		config: config,
+	"github.com/KoLLlaka/http-rest-api/internal/app/store/sqlstore"
+	"github.com/gorilla/sessions"
+)
+
+func Start(config *Config) error {
+
+	db, err := newDB(config.DatabaseURL)
+	if err != nil {
+		return err
 	}
+	defer db.Close()
+
+	store := sqlstore.New(db)
+	sessionStore := sessions.NewCookieStore([]byte(config.SessionKey))
+	srv := newServer(store, sessionStore)
+
+	return http.ListenAndServe(config.BindAddr, srv)
 }
 
-// Start
-func (s *APIServer) Start() error {
-	return nil
+func newDB(databaseURL string) (*sql.DB, error) {
+	db, err := sql.Open("mysql", databaseURL)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := db.Ping(); err != nil {
+		return nil, err
+	}
+
+	return db, nil
 }

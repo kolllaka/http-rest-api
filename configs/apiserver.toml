@@ -1,1 +1,4 @@
 bind_addr = ":8080"
+log_level = "debug"
+database_url = "root:12345@tcp(127.0.0.1:3306)/http_rest_api"
+session_key = "23498372489073219856349573261378594621975435687342587254832584"

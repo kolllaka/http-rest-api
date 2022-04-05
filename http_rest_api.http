@@ -1,0 +1,46 @@
+### sign-up
+### "error": "email: must be a valid email address; password: cannot be blank."
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+	"email": "invalid"
+}
+
+### sign-up
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+	"email": "user1@example.org",
+	"password": "password1"
+}
+
+### sign-in
+### "error": "incorrect email or password"
+POST http://localhost:8080/sessions
+Content-Type: application/json
+
+{
+	"email": "user@example.org",
+	"password": "123"
+}
+
+### sign-in
+POST http://localhost:8080/sessions
+Content-Type: application/json
+
+{
+	"email": "user1@example.org",
+	"password": "password"
+}
+
+### sign-in
+GET http://localhost:8080/private/whoami
+Content-Type: application/json
+Set-Cookie: KoLllak_TD=
+
+### sign-in
+GET http://localhost:8080/private/whoami
+Content-Type: application/json
+Origin: "google.com"
